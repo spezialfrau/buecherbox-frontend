@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mavies Bücherbox</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="tactic.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <h1>Mavies Bücherbox</h1>
+        <div>Hier sammelt Mavie Informationen über ihre Bücher</div>
+        <h3>Neues Buch eingeben</h3>
+        <form>
+            <div>
+                Titel <input type="text" name="titel"/>
+            </div>
+            <div>
+                Autor <input type="text" name="autor"/>
+            </div>
+            <div>
+                <input type="checkbox" name="kategorie" value="abenteuerlich"/> abenteuerlich<br>
+                <input type="checkbox" name="kategorie" value="Fantasie"/> Fantasie<br>
+                <input type="checkbox" name="kategorie" value="lustig"/> lustig<br>
+                <input type="checkbox" name="kategorie" value="gruselig"/> gruselig<br>
+                <input type="checkbox" name="kategorie" value="spannend"/> spannend<br>                
+            </div>
+            <div>
+                Inhalt<br>
+                <textarea name="inhalt" cols="55" rows="7"></textarea>
+            </div>
+            <input type="submit" value="Speichern"/>
+        </form>
+    </body>
+</html>
