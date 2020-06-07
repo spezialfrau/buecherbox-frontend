@@ -1,35 +1,72 @@
-
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Mavies Bücherbox</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.min.css">
-    </head>
-    <body>
-        <h1>Mavies Bücherbox</h1>
-        <div><a href="liste.html">Hier</a> sammelt Mavie Informationen über ihre Bücher</div>
-        <h3>Neues Buch eingeben</h3>
-        <form>
-            <div>
-                Titel <input type="text" name="titel"/>
-            </div>
-            <div>
-                Autor <input type="text" name="autor"/>
-            </div>
-            <div>
-                <input type="checkbox" name="kategorie" value="abenteuerlich"/> abenteuerlich<br>
-                <input type="checkbox" name="kategorie" value="Fantasie"/> Fantasie<br>
-                <input type="checkbox" name="kategorie" value="lustig"/> lustig<br>
-                <input type="checkbox" name="kategorie" value="gruselig"/> gruselig<br>
-                <input type="checkbox" name="kategorie" value="spannend"/> spannend<br>                
-            </div>
-            <div>
-                Inhalt<br>
-                <textarea name="inhalt" cols="55" rows="7"></textarea>
-            </div>
-            <input type="submit" value="Speichern"/>
-        </form>
-    </body>
+
+<head>
+    <title>Mavies Bücherbox</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+</head>
+
+<body>
+<h1>Mavies Bücherbox</h1>
+<div><a href="liste.html">Hier</a> sammelt Mavie Informationen über ihre Bücher</div>
+<div id="app">
+    <h3>{{ueberschrift}}</h3>
+    <form @submit.prevent="buchSpeichern">
+        <div>
+            Titel <input type="text" name="titel" v-model="form.titel"/>
+        </div>
+        <div>
+            Autor <input type="text" name="autor" v-model="form.autor"/>
+        </div>
+        <div>
+            <input type="checkbox" id="abenteuerlich" value="abenteuerlich" v-model="form.kategorien"/>
+            abenteuerlich<br>
+            <input type="checkbox" id="Fantasie" value="Fantasie" v-model="form.kategorien"/> Fantasie<br>
+            <input type="checkbox" id="lustig" value="lustig" v-model="form.kategorien"/> lustig<br>
+            <input type="checkbox" id="gruselig" value="gruselig" v-model="form.kategorien"/> gruselig<br>
+            <input type="checkbox" id="spannend" value="spannend" v-model="form.kategorien"/> spannend<br>
+        </div>
+        <div>
+            Inhalt<br>
+            <textarea name="inhalt" cols="55" rows="7" v-model="form.inhalt"></textarea>
+        </div>
+        <button>Speichern</button>
+    </form>
+</div>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            ueberschrift: 'Neues Buch eingeben!',
+            form: {
+                titel: '',
+                autor: '',
+                inhalt: '',
+                kategorien: []
+            }
+        },
+        methods: {
+            buchSpeichern() {
+                axios.post('https://buecherbox-backend-api.herokuapp.com/api/buecher', {
+                //axios.post('http://localhost:8080/api/buecher', {
+                    titel: this.form.titel,
+                    autor: this.form.autor,
+                    kategorien: this.form.kategorien,
+                    inhalt: this.form.inhalt
+                }).then(data => {
+                       window.location.href = "/liste.html";
+                   })
+                   .catch(error => {
+                       console.log(error.response);
+                   });
+            },
+        }
+    })
+</script>
+</body>
+
 </html>

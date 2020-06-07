@@ -6,35 +6,61 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
     </head>
     <body>
-        <h1>Mavies Bücherbox</h1>
-        <div><a href="index.html">Neues Buch hinzufügen</a></div>
-        <h3>Liste der Bücher</h3>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Autor</th>
-                    <th>Kategorien</th>
-                    <th> </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Unsere kleine Insel </td>
-                    <td>Rüdiger Bertram</td>
-                    <td>abenteuerlich, lustig</td>
-                    <td><a href="#">Details anzeigen</a></td>
-                </tr>
-                <tr>
-                    <td>Mama</td>
-                    <td>Hélène Delforge, Quentin Gréban</td>
-                    <td>abenteuerlich</td>
-                    <td><a href="#">Details anzeigen</a></td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="app">
+            <h1>Mavies Bücherbox</h1>
+            <div><a href="index.html">Neues Buch hinzufügen</a></div>
+            <h3>Liste der Bücher</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Autor</th>
+                        <th>Kategorien</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="buch in buecher">
+                        <td>{{ buch.titel }}</td>
+                        <td>{{ buch.autor }}</td>
+                        <td>
+                            <div v-for="kategorie in buch.kategorien">
+                                {{ kategorie }} <br>
+                            </div>
+                        </td>
+                        <td><a href="#">Details anzeigen</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
+        <script>
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    buecher: []
+                },
+                methods: {
+                    holeBuecher() {
+                        axios.get('https://buecherbox-backend-api.herokuapp.com/api/buecher')
+                        //axios.get('http://localhost:8080/api/buecher')
+                            .then(data => {
+                                this.buecher = data.data;
+                                console.log(this.buecher)
+                            })
+                            .catch(error => {
+                                console.log(error.response);
+                            });
+                    },
+                },
+                mounted() {
+                    this.holeBuecher()
+                }
+            })
+        </script>
     </body>
 </html>
