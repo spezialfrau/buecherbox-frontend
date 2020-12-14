@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 
 <head>
     <title>Mavies Bücherbox</title>
@@ -14,24 +14,24 @@
 <h1>Mavies Bücherbox</h1>
 <div><a href="liste.html">Hier</a> sammelt Mavie Informationen über ihre Bücher</div>
 <div id="app">
-    <h3>{{ueberschrift}}</h3>
+    <h3>Neues Buch eingeben!</h3>
     <form @submit.prevent="buchSpeichern">
         <div>
-            Titel <input type="text" name="titel" v-model="form.titel"/>
+            <strong>Titel</strong> <input type="text" name="titel" v-model="form.titel"/>
         </div>
         <div>
-            Autor <input type="text" name="autor" v-model="form.autor"/>
+            <strong>Autor</strong> <input type="text" name="autor" v-model="form.autor"/><br>
         </div>
         <div>
-            <input type="checkbox" id="abenteuerlich" value="abenteuerlich" v-model="form.kategorien"/>
-            abenteuerlich<br>
+            <strong>Kategorien</strong><br>
+            <input type="checkbox" id="abenteuerlich" value="abenteuerlich" v-model="form.kategorien"/>abenteuerlich<br>
             <input type="checkbox" id="Fantasie" value="Fantasie" v-model="form.kategorien"/> Fantasie<br>
             <input type="checkbox" id="lustig" value="lustig" v-model="form.kategorien"/> lustig<br>
             <input type="checkbox" id="gruselig" value="gruselig" v-model="form.kategorien"/> gruselig<br>
-            <input type="checkbox" id="spannend" value="spannend" v-model="form.kategorien"/> spannend<br>
+            <input type="checkbox" id="spannend" value="spannend" v-model="form.kategorien"/> spannend<br><br>
         </div>
         <div>
-            Inhalt<br>
+            <strong>Inhalt</strong><br>
             <textarea name="inhalt" cols="55" rows="7" v-model="form.inhalt"></textarea>
         </div>
         <button>Speichern</button>
@@ -41,7 +41,6 @@
     var app = new Vue({
         el: '#app',
         data: {
-            ueberschrift: 'Neues Buch eingeben!',
             form: {
                 titel: '',
                 autor: '',
@@ -51,6 +50,10 @@
         },
         methods: {
             buchSpeichern() {
+                if(this.form.titel=='' || this.form.autor=='') {
+                    alert("Titel und Autor sind Pflichtfelder!")
+                    return;
+                }
                 axios.post('https://buecherbox-backend-api.herokuapp.com/api/buecher', {
                 //axios.post('http://localhost:8080/api/buecher', {
                     titel: this.form.titel,
@@ -58,7 +61,7 @@
                     kategorien: this.form.kategorien,
                     inhalt: this.form.inhalt
                 }).then(data => {
-                       window.location.href = "/liste.html";
+                       window.location.href = "liste.html";
                    })
                    .catch(error => {
                        console.log(error.response);
